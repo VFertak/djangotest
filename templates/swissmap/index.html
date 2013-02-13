@@ -95,8 +95,9 @@ var g = svg.append("g")
             }
             var border_color = "#444";
             var unsel_color = "#e0e0e0";
+            var scaleXY = 1;
 
-            var R = new Raphael(document.getElementById('map'), 640, 480);
+            var R = new Raphael(document.getElementById('map'), 640*scaleXY, 480*scaleXY);
                 swiss = {}
             $.getJSON('{{ MEDIA_URL }}json/more.json', function(data) {
                 $.each(data, function(i) {
@@ -104,9 +105,12 @@ var g = svg.append("g")
                     var text = [];
                     swiss[canton] = R.path(data[i].path).transform('s1').attr({stroke:border_color,'stroke-width':1,'fill':unsel_color});
 
-                    $(swiss[canton].node).click( function(d) {alert(canton)});
+                    $(swiss[canton].node).click( function(d) {
+                                                    alert(canton);
+
+                                                });
                     $(swiss[canton].node).mouseover(function(d){
-                        text[canton] =  R.text(data[i].center.x, data[i].center.y,  canton);
+                        text[canton] =  R.text(data[i].center.x*scaleXY, data[i].center.y*scaleXY,  canton);
                         swiss[canton].animate(
                                 {"fill":'red',"stroke":'blue',"stroke-width":1}
                                 ,333)}
@@ -120,7 +124,12 @@ var g = svg.append("g")
                             }
                     );
                 })
+                var tfm = 'S'+ scaleXY + ','+ scaleXY + ',0,0';
+                R.forEach(function(obj){
+                    obj.transform(tfm);
+                });
             });
+
 
         </script>
     </div>
