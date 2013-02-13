@@ -99,7 +99,8 @@ var g = svg.append("g")
                 alert(canton);
                 return '#e2697a';
             }
-
+            var border_color = "#444";
+            var unsel_color = "#e0e0e0";
 
             var R = new Raphael(document.getElementById('map'), 640, 480);
                 swiss = {}
@@ -108,6 +109,16 @@ var g = svg.append("g")
                     swiss[data[canton].id] = R.path(data[canton].path).transform('s1').attr({stroke:border_color,'stroke-width':1,'fill':unsel_color});
 
                     $(swiss[data[canton].id].node).click( function(d) {alert(data[canton].id)});
+                    $(swiss[data[canton].id].node).mouseover(function(d){
+                        swiss[data[canton].id].animate(
+                                {"fill":'red',"stroke":'blue',"stroke-width":1}
+                                ,333)}
+                        );
+                    $(swiss[data[canton].id].node).mouseout(function(d){
+                                swiss[data[canton].id].animate(
+                                        {"fill":unsel_color,"stroke":border_color,"stroke-width":1}
+                                        ,333)}
+                    );
                 })
             });
 
