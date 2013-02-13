@@ -19,7 +19,7 @@
             var border_color = "#444";
             var unsel_color = "#e0e0e0";
 //dimensions
-var w = 500;
+var w = 900;
 var h = 500;
 
 var svg = d3.select("#map").append("svg")
@@ -27,10 +27,18 @@ var svg = d3.select("#map").append("svg")
         .attr("height", h);
 
 //create geo.path object, set the projection to merator bring it to the svg-viewport
+var projection = d3.geo.albers()
+        .rotate([0, 0])
+        .center([8.43, 46.8])
+        .scale(13600)
+        .translate([100, 0]);
+
 var path = d3.geo.path()
-        .projection(d3.geo.mercator()
-                .scale(26000)
-                .translate([-600, 3800]));
+        .projection(projection);
+{#var path = d3.geo.path()#}
+{#        .projection(d3.geo.mercator()#}
+{#                .scale(28500)#}
+{#                .translate([-600, 4100]));#}
 
 var g = svg.append("g")
         .attr("transform", "translate(" + w / 2 + "," + h / 2 + ")")
@@ -44,7 +52,14 @@ var g = svg.append("g")
                         .data(json.features)
                         .enter()
                         .append("path")
-                        .attr("fill", getFill() )
+                        .attr("fill", function(d) {
+                                if (d.properties.no > 15) {
+                                    return '#e2697a';
+                                } else {
+                                    return 'green';
+                                }
+
+                        } )
                         .attr("id", 'ddd' )
                         .attr("stroke", '#ffffff' )
                         .attr("d", path)
@@ -56,15 +71,22 @@ var g = svg.append("g")
                                     stroke: 'blue',
                                     'stroke-width': 2
                                 }, 1500 );
-{#                            var value = d.properties.name;#}
-{#                            	alert(value);//get the right value from d#}
+                            var value = d.properties.name;
+                            	alert(value);//get the right value from d
                         })
 
-
+                        g.selectAll("text")
+                                .data(json.features)
+                                .enter().append("text")
+                                .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+                                .attr("dy", ".01em")
+                                .text(function(d) { return d.properties.name; });
 
                     }
+
             );
-            function getFill() {
+            function getFill(d) {
+                alert(d);
 {#                alert(d.properties.abbr)#}
                 return '#e2697a';
             }
