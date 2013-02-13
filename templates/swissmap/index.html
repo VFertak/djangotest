@@ -65,7 +65,7 @@ var g = svg.append("g")
                                     borderWidth: "10px",
                                     stroke: 'blue',
                                     'stroke-width': 2
-                                }, 1500 );
+                                }, 500 );
                         })
 
                         g.selectAll("text")
@@ -106,7 +106,7 @@ var g = svg.append("g")
                     swiss[canton] = R.path(data[i].path).transform('s1').attr({stroke:border_color,'stroke-width':1,'fill':unsel_color});
 
                     $(swiss[canton].node).click( function(d) {
-                                                    alert(canton);
+                                                    alert('data is not here yet');
 
                                                 });
                     $(swiss[canton].node).mouseover(function(d){
