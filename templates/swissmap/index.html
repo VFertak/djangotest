@@ -12,15 +12,10 @@
 <section class="span6">
     <div id="map" style="border: solid 1px #000">
         <script type="text/javascript">
-{#            var R = new Raphael(document.getElementById('map'), 400, 400);#}
-            //        var worldProjection = d3.geo.mercator()
-            //                .translate([200,200]);
-
             var border_color = "#444";
             var unsel_color = "#e0e0e0";
-//dimensions
-var w = 900;
-var h = 500;
+            var w = 900;
+            var h = 500;
 
 var svg = d3.select("#map").append("svg")
         .attr("width", w)
@@ -85,7 +80,6 @@ var g = svg.append("g")
             );
             function getFill(d) {
                 alert(d);
-{#                alert(d.properties.abbr)#}
                 return '#e2697a';
             }
             function click(d){
