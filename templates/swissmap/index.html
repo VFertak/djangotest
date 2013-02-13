@@ -71,8 +71,6 @@ var g = svg.append("g")
                                     stroke: 'blue',
                                     'stroke-width': 2
                                 }, 1500 );
-                            var value = d.properties.name;
-                            	alert(value);//get the right value from d
                         })
 
                         g.selectAll("text")
@@ -101,8 +99,18 @@ var g = svg.append("g")
                 alert(canton);
                 return '#e2697a';
             }
+
+            var R = new Raphael(document.getElementById('map'), 640, 480);
+//        var worldProjection = d3.geo.mercator()
+//                .translate([200,200]);
             {#$.getJSON('{{ path('get_map') }}', function(data) {#}
-{#            $.getJSON('{{ MEDIA_URL }}json/swiss-cantons-simplified.json', function(data) {#}
+                swiss = {}
+            $.getJSON('{{ MEDIA_URL }}json/more.json', function(data) {
+                $.each(data, function(canton) {
+                    swiss[data[canton].id] = R.path(data[canton].path).transform('s1').attr({stroke:border_color,'stroke-width':1,'fill':unsel_color});
+                    $(swiss[data[canton].id].node).click( function(d) {alert(data[canton].id)});
+                })
+            });
 {##}
 {#                svg_borders = {};#}
 {#                swiss = {};#}
