@@ -105,18 +105,19 @@ var g = svg.append("g")
             var R = new Raphael(document.getElementById('map'), 640, 480);
                 swiss = {}
             $.getJSON('{{ MEDIA_URL }}json/more.json', function(data) {
-                $.each(data, function(canton) {
-                    swiss[data[canton].id] = R.path(data[canton].path).transform('s1').attr({stroke:border_color,'stroke-width':1,'fill':unsel_color});
+                $.each(data, function(i) {
+                   var canton = data[i].id;
+                    swiss[canton] = R.path(data[i].path).transform('s1').attr({stroke:border_color,'stroke-width':1,'fill':unsel_color});
 
-                    $(swiss[data[canton].id].node).click( function(d) {alert(data[canton].id)});
-                    $(swiss[data[canton].id].node).mouseover(function(d){
-                        swiss[data[canton].id].animate(
+                    $(swiss[canton].node).click( function(d) {alert(canton)});
+                    $(swiss[canton].node).mouseover(function(d){
+                        swiss[canton].animate(
                                 {"fill":'red',"stroke":'blue',"stroke-width":1}
                                 ,333)}
                         );
-                    $(swiss[data[canton].id].node).mouseout(function(d){
-                                swiss[data[canton].id].animate(
-                                        {"fill":unsel_color,"stroke":border_color,"stroke-width":1}
+                    $(swiss[canton].node).mouseout(function(d){
+                                swiss[canton].animate(
+                                            {"fill":unsel_color,"stroke":border_color,"stroke-width":1}
                                         ,333)}
                     );
                 })
