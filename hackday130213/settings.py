@@ -29,6 +29,7 @@ TIME_ZONE = 'America/Chicago'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'ru-Ru'
 
 SITE_ID = 1
 
@@ -43,7 +44,7 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
+PROJECT_DIR = os.path.abspath(os.path.dirname(__file__)+ '/..')
 MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 MEDIA_URL = '/media/'
@@ -68,12 +69,12 @@ STATIC_URL = '/static/'
 # STATIC_URL = '/media/'
 
 # Additional locations of static files
-STATICFILES_DIRS = (
+# STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     # os.path.join(os.path.dirname(__file__),'media').replace('\\','/'),
-)
+# )
 
 # List of finder classes that know how to find static files in
 # various locations.

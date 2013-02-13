@@ -1,11 +1,164 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="text/javascript" src="/js/test.js"></script>
-    <title></title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/raphael-min.js"></script>
+    <title>hackday 20130213</title>
 </head>
 <body>
 {{ welcome }} <br />
-{{ STATIC_URL }}js/test.js
+<section class="span6">
+    <div id="map" style="border: solid 1px #000">
+        <script type="text/javascript">
+{#            var R = new Raphael(document.getElementById('map'), 400, 400);#}
+            //        var worldProjection = d3.geo.mercator()
+            //                .translate([200,200]);
+
+            var border_color = "#444";
+            var unsel_color = "#e0e0e0";
+//dimensions
+var w = 500;
+var h = 500;
+
+var svg = d3.select("#map").append("svg")
+        .attr("width", w)
+        .attr("height", h);
+
+//create geo.path object, set the projection to merator bring it to the svg-viewport
+var path = d3.geo.path()
+        .projection(d3.geo.mercator()
+                .scale(26000)
+                .translate([-600, 3800]));
+
+var g = svg.append("g")
+        .attr("transform", "translate(" + w / 2 + "," + h / 2 + ")")
+        .append("g")
+        .attr("id", "cantons");
+//draw svg lines of the boundres
+            d3.json(
+                    "{{ MEDIA_URL }}json/swiss-cantons-simplified.json",
+                    function (json) {
+                    g.selectAll("path")
+                        .data(json.features)
+                        .enter()
+                        .append("path")
+                        .attr("fill", getFill() )
+                        .attr("id", 'ddd' )
+                        .attr("stroke", '#ffffff' )
+                        .attr("d", path)
+                        .on("click", function (d) {
+                                $(this).animate({
+                                    opacity: 0.8,
+                                    fontSize: "3em",
+                                    borderWidth: "10px",
+                                    stroke: 'blue',
+                                    'stroke-width': 2
+                                }, 1500 );
+{#                            var value = d.properties.name;#}
+{#                            	alert(value);//get the right value from d#}
+                        })
+
+
+
+                    }
+            );
+            function getFill() {
+{#                alert(d.properties.abbr)#}
+                return '#e2697a';
+            }
+            function click(d){
+                k = 1;
+                x = 0;
+                y = 0;
+                alert(g.getId);
+            }
+
+            function selectClass(canton) {
+                alert(canton);
+                return '#e2697a';
+            }
+            {#$.getJSON('{{ path('get_map') }}', function(data) {#}
+{#            $.getJSON('{{ MEDIA_URL }}json/swiss-cantons-simplified.json', function(data) {#}
+{##}
+{#                svg_borders = {};#}
+{#                swiss = {};#}
+{#                $.each(data["features"], function(idx,feature) {#}
+{#                    canton = feature.properties.name;#}
+{##}
+{#                    n = feature.properties.no;#}
+{#                    svg_borders[canton]=[];#}
+{##}
+{#                if (n !== 1 || n !== 19) {#}
+{#                    if (n == 1 || n == 19) {#}
+{##}
+{#                        if (feature.geometry.type == "MultiPolygon") {#}
+{#                            polygons = feature.geometry.coordinates;#}
+{#                        }#}
+{#                        else { // Single polygon#}
+{#                            polygons = [#}
+{#                            polygons = [feature.geometry.coordinates];#}
+{#                        }#}
+{##}
+{#                        var maps = '';#}
+{#                        $.each(polygons, function (idxpolygon, polygon) {#}
+{#                            $.each (polygon, function (idxline, geojson_line) {#}
+{#                                var line;#}
+{#                                var i;#}
+{#                                var str_line = "M";#}
+{#                                for (var i=0, l=geojson_line.length;i<l;i+=1) {#}
+{#//                            xy = worldProjection(geojson_line[i]);#}
+{#//                            str_line += xy[0] + " " + xy[1];#}
+{##}
+{#//                            if (i> 0) {#}
+{#//                                alert(i);#}
+{#//                                str_line += "L";#}
+{#//                            }#}
+{#                                    x = geojson_line[i][0] +100;#}
+{#                                    y = geojson_line[i][1] +100;#}
+{#                                    str_line += ""+ x + ',' + y +"L" ;#}
+{#//                            str_line += '' +geojson_line[i][0] + "," + geojson_line[i][1] + "L";#}
+{#                                }#}
+{#                                str_line += "Z";#}
+{#                                maps += str_line;#}
+{#                                swiss.canton = R.path(maps).transform('s100').attr({stroke:border_color,'stroke-width':1,'fill':unsel_color});#}
+{#                                swiss.canton = R.path(maps).transform('T100,100s100').attr({stroke:border_color,'stroke-width':1,'fill':unsel_color});#}
+{##}
+{#//                        alert(str_line);#}
+{#//                        line = paper.path(str_line).transform('T100,200s150');#}
+{#//                        swiss.canton = paper.path(str_line).transform('T100,200s150').attr({'stroke-linejoin': 'round',stroke:border_color,'stroke-width':1,'fill':unsel_color});#}
+{#//                       lololo = str_line;#}
+{#//                         swiss.canton = R.path(str_line).transform('T100,200s250').attr({'stroke-linejoin': 'round',stroke:border_color,'stroke-width':1,'fill':unsel_color});#}
+{#//                        svg_borders[canton].line = paper.path(str_line).transform('T100,200s150');#}
+{#//                        svg_borders[canton].line.attr({'stroke-linejoin': 'round',stroke:border_color,'stroke-width':1,'fill':unsel_color});#}
+{##}
+{#//                        svg_borders[canton].canton=canton;#}
+{#//                        $(line.node).click( get_click_handler(country));#}
+{#//                        $(svg_borders[canton].node).mousemove( get_over_handler(canton));#}
+{#//                        $(line.node).mouseout( get_out_handler(country));#}
+{#//                        alert(country);#}
+{#//                        svg_borders[country].push(line);#}
+{#//                        function get_over_handler(canton){#}
+{#//                            return function(event){#}
+{#//                                var i;#}
+{#//                                var l;#}
+{#//                                if (svg_borders.hasOwnProperty(canton)) {#}
+{#//                                    for (i=0, l = svg_borders[canton].length; i< l;i++) {#}
+{#//                                        s =svg_borders[canton][i];#}
+{#//                                        s.animate({"fill":'red',"stroke":border_color,"stroke-width":1},333);#}
+{#//                                    }#}
+{#//                                }#}
+{#//                            }#}
+{#//                        }#}
+{#                            });#}
+{#                        });#}
+{#                    }#}
+{#                });#}
+{#            });#}
+
+        </script>
+    </div>
+</section>
 </body>
 </html>
